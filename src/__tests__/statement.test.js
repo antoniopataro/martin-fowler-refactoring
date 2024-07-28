@@ -1,7 +1,7 @@
 import invoices from "./invoices.json";
 import plays from "./plays.json";
 
-import { statement } from "./index";
+import { statement } from "../index";
 
 const input = [invoices[0], plays];
 
