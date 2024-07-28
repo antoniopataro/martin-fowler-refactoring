@@ -30,7 +30,7 @@ class PlayCalculator {
   }
 
   calculateVolumeCredits() {
-    throw new Error("calculateVolumeCredits not implemented");
+    return this.calculateVolumeCreditsDefault();
   }
 
   calculateVolumeCreditsDefault() {
@@ -77,10 +77,6 @@ class TragedyCalculator extends PlayCalculator {
     }
 
     return amount;
-  }
-
-  calculateVolumeCredits() {
-    return this.calculateVolumeCreditsDefault();
   }
 }
 
