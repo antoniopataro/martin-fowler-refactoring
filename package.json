@@ -1,14 +1,15 @@
 {
-  "name": "refactoring-martin-fowler",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
+  "description": "",
+  "devDependencies": {
     "jest": "^29.7.0"
-  }
+  },
+  "license": "ISC",
+  "main": "index.js",
+  "name": "refactoring-martin-fowler",
+  "scripts": {
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
+  },
+  "type": "module",
+  "version": "1.0.0"
 }
