@@ -8,10 +8,10 @@ class StatementCalculator {
   }
 
   buildStatementString(totalAmount, volumeCredits) {
-    let result = `Statement for ${this.#getCustomer()}\n`;
+    let result = `Statement for ${this.invoice.customer}\n`;
 
-    for (const performance of this.#getPerformances()) {
-      const play = new Play(this.plays[performance.playID]);
+    for (const performance of this.invoice.performances) {
+      const play = new Play(this.#getPlayByPerformance(performance));
 
       const amount = play.calculateAmount(performance);
 
@@ -29,8 +29,8 @@ class StatementCalculator {
   calculateTotalAmount() {
     let totalAmount = 0;
 
-    for (const performance of this.#getPerformances()) {
-      const play = new Play(this.plays[performance.playID]);
+    for (const performance of this.invoice.performances) {
+      const play = new Play(this.#getPlayByPerformance(performance));
 
       totalAmount += play.calculateAmount(performance);
     }
@@ -41,8 +41,8 @@ class StatementCalculator {
   calculateVolumeCredits() {
     let volumeCredits = 0;
 
-    for (const performance of this.#getPerformances()) {
-      const play = new Play(this.plays[performance.playID]);
+    for (const performance of this.invoice.performances) {
+      const play = new Play(this.#getPlayByPerformance(performance));
 
       volumeCredits += play.calculateVolumeCredits(performance);
     }
@@ -50,12 +50,8 @@ class StatementCalculator {
     return volumeCredits;
   }
 
-  #getCustomer() {
-    return this.invoice.customer;
-  }
-
-  #getPerformances() {
-    return this.invoice.performances;
+  #getPlayByPerformance(performance) {
+    return this.plays[performance.playID];
   }
 }
 

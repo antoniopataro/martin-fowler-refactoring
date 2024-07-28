@@ -4,69 +4,47 @@ export class Play {
   }
 
   calculateAmount(performance) {
-    const type = this.#getType();
+    const calculator = PlayCalculatorFactory.create(performance, this.play);
 
-    switch (type) {
-      case "comedy": {
-        return ComedyCalculator.calculate(performance);
-      }
-      case "tragedy": {
-        return TragedyCalculator.calculate(performance);
-      }
-      default: {
-        throw new Error(`unknown type: ${this.play.type}`);
-      }
-    }
+    return calculator.calculateAmount();
   }
 
   calculateVolumeCredits(performance) {
-    const type = this.#getType();
+    const calculator = PlayCalculatorFactory.create(performance, this.play);
 
-    switch (type) {
-      case "comedy": {
-        return ComedyCalculator.calculateVolumeCredits(performance);
-      }
-      case "tragedy": {
-        return TragedyCalculator.calculateVolumeCredits(performance);
-      }
-      default: {
-        throw new Error(`unknown type: ${this.play.type}`);
-      }
-    }
+    return calculator.calculateVolumeCredits();
   }
 
   getName() {
     return this.play.name;
   }
-
-  #getType() {
-    return this.play.type;
-  }
 }
 
 class PlayCalculator {
-  constructor() {}
+  constructor(performance) {
+    this.performance = performance;
+  }
 
-  static calculate() {
+  calculateAmount() {
     throw new Error("calculate not implemented");
   }
 
-  static calculateVolumeCredits(performance) {
+  calculateVolumeCredits() {
     throw new Error("calculateVolumeCredits not implemented");
   }
 
-  static calculateVolumeCreditsDefault(performance) {
+  calculateVolumeCreditsDefault() {
     let volumeCredits = 0;
 
-    volumeCredits += Math.max(performance.audience - 30, 0);
+    volumeCredits += Math.max(this.performance.audience - 30, 0);
 
     return volumeCredits;
   }
 }
 
 class ComedyCalculator extends PlayCalculator {
-  static calculate(performance) {
-    const audience = performance.audience;
+  calculateAmount() {
+    const audience = this.performance.audience;
 
     let amount = 300;
 
@@ -79,18 +57,18 @@ class ComedyCalculator extends PlayCalculator {
     return amount;
   }
 
-  static calculateVolumeCredits(performance) {
-    let volumeCredits = this.calculateVolumeCreditsDefault(performance);
+  calculateVolumeCredits() {
+    let volumeCredits = this.calculateVolumeCreditsDefault();
 
-    volumeCredits += Math.floor(performance.audience / 5);
+    volumeCredits += Math.floor(this.performance.audience / 5);
 
     return volumeCredits;
   }
 }
 
 class TragedyCalculator extends PlayCalculator {
-  static calculate(performance) {
-    const audience = performance.audience;
+  calculateAmount() {
+    const audience = this.performance.audience;
 
     let amount = 400;
 
@@ -101,7 +79,25 @@ class TragedyCalculator extends PlayCalculator {
     return amount;
   }
 
-  static calculateVolumeCredits(performance) {
-    return this.calculateVolumeCreditsDefault(performance);
+  calculateVolumeCredits() {
+    return this.calculateVolumeCreditsDefault();
+  }
+}
+
+class PlayCalculatorFactory {
+  constructor() {}
+
+  static create(performance, play) {
+    switch (play.type) {
+      case "comedy": {
+        return new ComedyCalculator(performance);
+      }
+      case "tragedy": {
+        return new TragedyCalculator(performance);
+      }
+      default: {
+        throw new Error(`unknown type: ${play.type}`);
+      }
+    }
   }
 }
